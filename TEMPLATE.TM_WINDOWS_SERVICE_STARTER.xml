@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2024-09-01T21:22:08Z</date>
+    <groups>
+        <group>
+            <name>TEMPLATES.TM</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>TEMPLATE.TM_WINDOWS_SERVICE_STARTER</template>
+            <name>TEMPLATE.TM_WINDOWS_SERVICE_STARTER</name>
+            <groups>
+                <group>
+                    <name>TEMPLATES.TM</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>STARTER</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>SERVICE STARTER CMD</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[(sc query {#SERVICE} | find &quot;RUNNING&quot; &gt;nul &amp;&amp; echo 1 || echo 0) &amp; net start {#SERVICE} &gt;nul 2&gt;&amp;1]</key>
+                    <status>DISABLED</status>
+                    <description>Primeiro comando testa apenas se o codigo rodou:&#13;
+system.run[&quot;net start SentinelAgent &gt;nul 2&gt;&amp;1 &amp;&amp; echo 1 || echo 0&quot;]&#13;
+&#13;
+Segundo comando executa o serviço e verifica se está rodando. Com esse item consigo criar a trigger que irá alarmar caso o serviço tenha parado mais de 5 vezes:&#13;
+system.run[&quot;net start W32Time &gt;nul 2&gt;&amp;1 &amp; sc query W32Time | find \&quot;RUNNING\&quot; &gt;nul &amp;&amp; echo 0 || echo 1&quot;]&#13;
+&#13;
+0 Rodou 1 não rodou.</description>
+                    <applications>
+                        <application>
+                            <name>STARTER</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SERVICE STARTER</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;$servico='{$SERVICEUP}'; $status=(Get-Service -Name $servico).Status; if ($status -eq 'Running') { echo 0 } else { echo 1 }; Start-Service -Name $servico&quot;]</key>
+                    <applications>
+                        <application>
+                            <name>STARTER</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{count(1d,0,&quot;gt&quot;)} &gt; 4</expression>
+                            <name>{$SERVICEUP} STOPPED MORE THAN 4 TIMES</name>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$SERVICEUP}</macro>
+                    <description>Coloque o nome do serviço</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>

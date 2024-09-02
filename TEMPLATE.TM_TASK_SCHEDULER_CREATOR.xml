@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2024-09-01T21:21:21Z</date>
+    <groups>
+        <group>
+            <name>TEMPLATE.TM</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>TEMPLATE.TM_TASK_SCHEDULER_CREATOR</template>
+            <name>TEMPLATE.TM_TASK_SCHEDULER_CREATOR</name>
+            <description>template para windows&#13;
+&#13;
+Criado por Gabriel Lau</description>
+            <groups>
+                <group>
+                    <name>TEMPLATE.TM</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>TASK SCHEDULER</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>ITEAM CREATION</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[&quot;powershell -command \&quot;'net start wuaserv' | out-file -filepath 'C:\\teste.ps1' -encoding ASCII\&quot;&quot;]</key>
+                    <delay>1d</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Criado por Gabriel Lau</description>
+                    <applications>
+                        <application>
+                            <name>TASK SCHEDULER</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>TASK CREATOR</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[&quot;powershell -command \&quot;schtasks /create /tn 'ZabbixTask' /tr 'powershell.exe -File C:\\teste.ps1' /sc minute /mo 5 /ru SYSTEM /f\&quot;&quot;]</key>
+                    <delay>1d</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Criado por Gabriel Lau</description>
+                    <applications>
+                        <application>
+                            <name>TASK SCHEDULER</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+        </template>
+    </templates>
+</zabbix_export>

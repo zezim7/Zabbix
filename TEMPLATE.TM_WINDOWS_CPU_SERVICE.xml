@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2024-09-01T21:20:34Z</date>
+    <groups>
+        <group>
+            <name>TEMPLATE.TM</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>TEMPLATE.TM_WINDOWS_CPU_SERVICE</template>
+            <name>TEMPLATE.TM_WINDOWS_CPU_SERVICE</name>
+            <groups>
+                <group>
+                    <name>TEMPLATE.TM</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <name>CPU-Z SERVICE CPU USAGE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\Process(cpuz)\% Processor Time]</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                </item>
+                <item>
+                    <name>ZABBIX AGENT SERVICE CPU USAGE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\Process(zabbix_agent2)\% Processor Time]</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                </item>
+                <item>
+                    <name>NÚMERO DE NUCLEOS</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.cpu.num</key>
+                </item>
+                <item>
+                    <name>CONSUMO DE CPU (PORCENTAGEM)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.cpu.util[,system,]</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                </item>
+            </items>
+        </template>
+    </templates>
+    <triggers>
+        <trigger>
+            <expression>{TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.util[,system,].last()} &gt;= 90 and&#13;
+({TEMPLATE.TM_WINDOWS_CPU_SERVICE:perf_counter[\Process(cpuz)\% Processor Time].last()} / {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.num.last()}) &gt;= 10 and&#13;
+({TEMPLATE.TM_WINDOWS_CPU_SERVICE:perf_counter[\Process(cpuz)\% Processor Time].last()} / {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.num.last()}) &gt; (90 - {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.util[,system,].last()})</expression>
+            <name>CPU-Z SERVICE CPU USAGE</name>
+        </trigger>
+        <trigger>
+            <expression>{TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.util[,system,].last()} &gt;= 90 and ({TEMPLATE.TM_WINDOWS_CPU_SERVICE:perf_counter[\Process(zabbix_agent2)\% Processor Time].last()} / {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.num.last()}) &gt;= 20 and ({TEMPLATE.TM_WINDOWS_CPU_SERVICE:perf_counter[\Process(zabbix_agent2)\% Processor Time].last()} / {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.num.last()}) &gt; (90 - {TEMPLATE.TM_WINDOWS_CPU_SERVICE:system.cpu.util[,system,].last()})</expression>
+            <name>ZABBIX AGENT SERVICE CPU USAGE</name>
+        </trigger>
+    </triggers>
+</zabbix_export>
