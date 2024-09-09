@@ -51,3 +51,36 @@
         </template>
     </templates>
 </zabbix_export>
+
+
+
+##Script##
+param (
+    [string]$ipAddress,
+    [int]$port = 1433
+)
+
+function Testar-Tcpclient {
+    param (
+        [string]$target,
+        [int]$port
+    )
+
+    try {
+        $tcpClient = New-Object System.Net.Sockets.TcpClient
+        $tcpClient.Connect($target, $port)
+        $tcpClient.Close()
+        return $true
+    }
+    catch {
+        return $false
+    }
+}
+
+$result = Testar-Tcpclient -target $ipAddress -port $port
+Write-Output $result
+
+
+
+Connf.agent.d
+UserParameter=host.tcpclient,powershell.exe -noprofile -executionpolicy bypass -File C:\Zabbix\scripts\host_clienttcp_host.ps1 -ipAddress "IPHERE"
