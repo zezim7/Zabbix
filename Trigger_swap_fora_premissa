@@ -1,0 +1,17 @@
+	
+Problem: 
+( {Template_hostname:vm.memory.size[total].last()}<10G and {Template_hostname:system.swap.size[,total].last()}<(({Template_hostname:vm.memory.size[total].last()}*1.5) + 128M) ) or 
+( {Template_hostname:vm.memory.size[total].last()}<10G and {Template_hostname:system.swap.size[,total].last()}>(({Template_hostname:vm.memory.size[total].last()}*1.5) + 1G) ) or 
+( {Template_hostname:vm.memory.size[total].last()} >10G and {Template_hostname:vm.memory.size[total].last()} <32G and {Template_hostname:system.swap.size[,total].last()}<({Template_hostname:vm.memory.size[total].last()}+128M) ) or 
+( {Template_hostname:vm.memory.size[total].last()} >10G and {Template_hostname:vm.memory.size[total].last()} <32G and {Template_hostname:system.swap.size[,total].last()}>({Template_hostname:vm.memory.size[total].last()}+1G) ) or 
+( {Template_hostname:vm.memory.size[total].last()} >32G and {Template_hostname:system.swap.size[,total].last()}<32896M ) or 
+( {Template_hostname:vm.memory.size[total].last()} >32G and {Template_hostname:system.swap.size[,total].last()}>32896M+1G )
+
+
+
+
+
+Recovery: 
+( {Template_hostname:vm.memory.size[total].last()} <10G and {Template_hostname:system.swap.size[,total].last()} >= ({Template_hostname:vm.memory.size[total].last()} * 1.5) + 128M and {Template_hostname:system.swap.size[,total].last()} <= ({Template_hostname:vm.memory.size[total].last()} * 1.5) + 128M + 1G ) or 
+( {Template_hostname:vm.memory.size[total].last()} >= 10G and {Template_hostname:vm.memory.size[total].last()} < 32G and {Template_hostname:system.swap.size[,total].last()} >= {Template_hostname:vm.memory.size[total].last()} + 128M and {Template_hostname:system.swap.size[,total].last()} <= {Template_hostname:vm.memory.size[total].last()} + 128M + 1G ) or 
+( {Template_hostname:vm.memory.size[total].last()} >= 32G and {Template_hostname:system.swap.size[,total].last()} >= 32896M and {Template_hostname:system.swap.size[,total].last()} <= 32896M + 1G )
