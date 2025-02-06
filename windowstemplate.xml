@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2025-02-06T17:23:09Z</date>
+    <groups>
+        <group>
+            <name>TEMPLATES.TM</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>TEMPLATE.TM_ATIVACAO_ZABBIX_AGENT_WIN</template>
+            <name>TEMPLATE.TM_ATIVACAO_ZABBIX_AGENT_WIN</name>
+            <groups>
+                <group>
+                    <name>TEMPLATES.TM</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>ANTIVIRUS</name>
+                </application>
+                <application>
+                    <name>CSR</name>
+                </application>
+                <application>
+                    <name>MEMORIA</name>
+                </application>
+                <application>
+                    <name>TS</name>
+                </application>
+                <application>
+                    <name>WINDOWS</name>
+                </application>
+                <application>
+                    <name>WINDOWS PUPPET</name>
+                </application>
+                <application>
+                    <name>ZABBIX AGENT</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>HOSTNAME DO AGENTE ZABBIX</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>agent.hostname</key>
+                    <delay>5m</delay>
+                    <history>30d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <applications>
+                        <application>
+                            <name>ZABBIX AGENT</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>DISCARD_UNCHANGED</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <request_method>POST</request_method>
+                </item>
+                <item>
+                    <name>STATUS DO AGENTE ZABBIX</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>agent.ping</key>
+                    <history>30d</history>
+                    <trends>180d</trends>
+                    <description>The agent always returns 1 for this item. It could be used in combination with nodata() for availability check.</description>
+                    <applications>
+                        <application>
+                            <name>ZABBIX AGENT</name>
+                        </application>
+                    </applications>
+                    <request_method>POST</request_method>
+                    <triggers>
+                        <trigger>
+                            <expression>{nodata(5m)}={$COND_AGENTE}</expression>
+                            <name>#AGENT.NODATA# AGENTE DO ZABBIX SEM ENVIAR DADOS</name>
+                            <status>DISABLED</status>
+                            <tags>
+                                <tag>
+                                    <tag>ZABBIX AGENT</tag>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>AGENT VARIANT</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>agent.variant</key>
+                    <applications>
+                        <application>
+                            <name>ZABBIX AGENT</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>VERSAO DO AGENTE ZABBIX</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>agent.version</key>
+                    <history>30d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>ZABBIX AGENT</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>DISCARD_UNCHANGED</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <request_method>POST</request_method>
+                </item>
+                <item>
+                    <name>TS (TCP - {$TS})</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>net.tcp.port[,{$TS}]</key>
+                    <valuemap>
+                        <name>PORTA</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: TREND MICRO DEEP SECURITY AGENT</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[ds_agent, startup]</key>
+                    <applications>
+                        <application>
+                            <name>ANTIVIRUS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: TREND MICRO DEEP SECURITY AGENT</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[ds_agent, state]</key>
+                    <applications>
+                        <application>
+                            <name>ANTIVIRUS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STARTUP: SERVER</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[LanmanServer, startup]</key>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: SERVER</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[LanmanServer, state]</key>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STARTUP: MCOLLECTIVE SERVICE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[mcollective, startup]</key>
+                    <description>Numerical value of the service startup type:&#13;
+0 - Automatic&#13;
+1 - Automatic delayed&#13;
+2 - Manual&#13;
+3 - Disabled&#13;
+4 - Unknown</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS PUPPET</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: MCOLLECTIVE SERVICE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[mcollective, state]</key>
+                    <history>30d</history>
+                    <trends>180d</trends>
+                    <applications>
+                        <application>
+                            <name>WINDOWS PUPPET</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                    <request_method>POST</request_method>
+                </item>
+                <item>
+                    <name>SERVICE STARTUP: PUPPET SERVICE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[puppet, startup]</key>
+                    <description>Numerical value of the service startup type:&#13;
+0 - Automatic&#13;
+1 - Automatic delayed&#13;
+2 - Manual&#13;
+3 - Disabled&#13;
+4 - Unknown</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS PUPPET</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: PUPPET SERVICE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[puppet, state]</key>
+                    <history>30d</history>
+                    <trends>180d</trends>
+                    <applications>
+                        <application>
+                            <name>WINDOWS PUPPET</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                    <request_method>POST</request_method>
+                </item>
+                <item>
+                    <name>SERVICE STATE: SEP MASTER SERVICE (SYMANTEC)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[SepMasterService, startup]</key>
+                    <applications>
+                        <application>
+                            <name>ANTIVIRUS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>SERVICE STATE: SEP MASTER SERVICE (SYMANTEC)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[SepMasterService, state]</key>
+                    <applications>
+                        <application>
+                            <name>ANTIVIRUS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>ATIVACAO SERVICE STATE: SNOW INVENTORY</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[SnowInventoryAgent5, state]</key>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>Windows service state</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>System Hostname</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.hostname</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+                <item>
+                    <name>POWERSHELL VERSION</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[&quot;powershell.exe -Command \&quot;&amp; { $psVersion = $PSVersionTable.PSVersion.ToString(); $majorMinor = $psVersion.Substring(0, $psVersion.IndexOf('.', $psVersion.IndexOf('.') + 1)); Write-Output $majorMinor }\&quot;&quot;]</key>
+                    <value_type>FLOAT</value_type>
+                    <description>O comando coleta a versão do powershell PSVersion deve ser maior que 5.1</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>ACCOUNT LOCKOUT POLICY</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;&amp; { $output = net accounts | findstr /R /C:\&quot;Lockout threshold:\&quot; /C:\&quot;Lockout duration (minutes):\&quot; /C:\&quot;Lockout observation window (minutes):\&quot;; if ($output -match 'Lockout threshold:\s+50' -and $output -match 'Lockout duration \(minutes\):\s+30' -and $output -match 'Lockout observation window \(minutes\):\s+30') {echo 1} else {echo 0} }&quot;]</key>
+                    <description>Políticas da premissa devem estar&#13;
+Lockout threshold:                                            50&#13;
+Lockout duration (minutes):                              30&#13;
+Lockout observation window (minutes):            30</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>1:TRUE, 0:FALSE</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>AllowKey=System.run[*] ON ZABBIX CONF ENABLED STATE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;&amp; { $psVersion = $PSVersionTable.PSVersion.ToString(); echo $psVersion }&quot;]</key>
+                    <delay>2m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>O comando coleta a versão do powershell PSVersion&#13;
+&#13;
+ A trigger para este item serve para verificar se o comando está configurado na conf do zabbix agent</description>
+                    <applications>
+                        <application>
+                            <name>ZABBIX AGENT</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>UAC STATUS</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -command &quot;(Get-ItemProperty -Path &quot;HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System&quot;).EnableLUA&quot;]</key>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>1:TRUE, 0:FALSE</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>TELNET CLIENT INSTALL STATUS</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -command &quot;if ((Get-WindowsOptionalFeature -FeatureName TelnetClient -Online).State -eq 'Enabled') { echo 1 } else { echo 0 } &quot;]</key>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>1:TRUE, 0:FALSE</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>ZABBIX VIA PUPPET</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;if ((puppet facts | FINDSTR '&quot;equinix_windows_zabbix_agent_installed&quot;: true') -ne '') {echo 1} else {echo 0}&quot;]</key>
+                    <delay>10m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>CSR</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SYS ID PUPPET</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;if ((puppet facts | FINDSTR /C:'{$SYSID}') -ne '') {echo 1} else {echo 0}&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>CSR</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>NTP EQUINIX SINCRONIZADO</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;if ((w32tm /query /configuration | Select-String 'NtpServer' | Select-String 'extntp.equinix.com.br') -ne $null -or (w32tm /query /configuration | Select-String 'NtpServer' | Select-String '1.extntp.equinix.com.br') -ne $null -or (w32tm /query /configuration | Select-String 'NtpServer' | Select-String '2.extntp.equinix.com.br') -ne $null -or (w32tm /query /configuration | Select-String 'NtpServer' | Select-String '3.extntp.equinix.com.br') -ne $null) {echo 1} else {echo 0}&quot;]</key>
+                    <delay>2m</delay>
+                    <description>NTP sincronizado. Preferencialmente NTP Equinix:&#13;
+extntp.equinix.com.br&#13;
+1.extntp.equinix.com.br&#13;
+2.extntp.equinix.com.br&#13;
+3.extntp.equinix.com.br</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>1:TRUE, 0:FALSE</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>KERNEL MEMORY DUMP ENABLE STATUS</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[powershell.exe -Command &quot;if ((wmic recoveros get DebugInfoType | FINDSTR 2) -ne '') {echo 1} else {echo 0}&quot;]</key>
+                    <delay>2m</delay>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>1:TRUE, 0:FALSE</name>
+                    </valuemap>
+                </item>
+                <item>
+                    <name>TOTAL SWAP SPACE</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.swap.size[,total]</key>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>MEMORIA</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>MEMÓRIA TOTAL</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>vm.memory.size[total]</key>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>MEMORIA</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>GUID</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>wmi.get[&quot;root\cimv2&quot;,&quot;select UUID  from Win32_ComputerSystemProduct&quot;]</key>
+                    <delay>10m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Para o Tshoot deste item, rode no powershell do host o comando:&#13;
+&#13;
+Get-WmiObject Win32_ComputerSystemProduct | Select-Object UUID&#13;
+&#13;
+E verifique se o valor está batendo com o valor do latest data.&#13;
+&#13;
+Gabriel Lau 14/08/2024</description>
+                    <applications>
+                        <application>
+                            <name>WINDOWS</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Disco</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>vfs.fs.discovery</key>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#FSNAME}</macro>
+                                <value>@Disk Discovery</value>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>DISK {#FSNAME} NTFS STATUS</name>
+                            <type>ZABBIX_ACTIVE</type>
+                            <key>system.run[powershell.exe -Command &quot;$No2point = '{#FSNAME}'.TrimEnd(':'); if ((Get-Volume -DriveLetter $No2point).FileSystem -eq 'NTFS') { echo 1 } else { echo 0 }&quot;]</key>
+                            <delay>5m</delay>
+                            <applications>
+                                <application>
+                                    <name>WINDOWS</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>1:TRUE, 0:FALSE</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>DISK {#FSNAME} IS NOT NTFS</name>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$AGENT_VERSION}</macro>
+                    <value>^4\.0</value>
+                </macro>
+                <macro>
+                    <macro>{$SYSID}</macro>
+                    <description>Coloque o final do Hostname que está no Zabbix</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+    <value_maps>
+        <value_map>
+            <name>1:TRUE, 0:FALSE</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>FALSE</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>TRUE</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>PORTA</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Closed/Filtred</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Open</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>Windows service state</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Running</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Paused</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>Start pending</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>Pause pending</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>Continue pending</newvalue>
+                </mapping>
+                <mapping>
+                    <value>5</value>
+                    <newvalue>Stop pending</newvalue>
+                </mapping>
+                <mapping>
+                    <value>6</value>
+                    <newvalue>Stopped</newvalue>
+                </mapping>
+                <mapping>
+                    <value>7</value>
+                    <newvalue>Unknown</newvalue>
+                </mapping>
+                <mapping>
+                    <value>255</value>
+                    <newvalue>No such service</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
