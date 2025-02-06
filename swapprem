@@ -1,0 +1,14 @@
+swap
+
+
+
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}<10G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}<(({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}*1.5) + 128M) ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}<10G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}>(({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}*1.5) + 1G) ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >10G and {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} <32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}<({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}+128M) ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >10G and {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} <32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}>({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()}+1G) ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}<32896M ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()}>32896M+1G )
+
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} <10G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} >= ({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} * 1.5) + 128M and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} <= ({TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} * 1.5) + 128M + 1G ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >= 10G and {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} < 32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} >= {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} + 128M and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} <= {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} + 128M + 1G ) or 
+( {TEMPLATE.TM_WINDOWS_BASICO:vm.memory.size[total].last()} >= 32G and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} >= 32896M and {TEMPLATE.TM_WINDOWS_BASICO:system.swap.size[,total].last()} <= 32896M + 1G )
