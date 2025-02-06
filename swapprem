@@ -1,4 +1,16 @@
-swap
+Necessário verificar antes de qualquer alteração se o host possui serviços específicos que utiliza-se de grandes níveis de swap. 
+
+Para normalização é necessário alterar no host o SWAP com as seguintes infos:
+
+<10GB:
+1024 * Ram Total(Gb) * 1.5 + 128(Mb)
+
+>=10Gb e <32Gb
+1024 * Ram Total(Gb) + 128(Mb)
+
+>=32Gb 
+Deverá ser 32896M
+
 
 
 
